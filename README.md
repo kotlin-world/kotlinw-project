@@ -8,7 +8,7 @@ Javascript wrappers for:
 
 ## Library
 
-Multiplatform Kotlin library.
+Multiplatform Kotlin library (for JVM and JS).
 
 Goals:
 - use Java types on JVM (if possible)

@@ -5,11 +5,20 @@ buildscript {
         maven { url = uri("https://plugins.gradle.org/m2/") }
     }
 
+    val dokkaVersion: String by project
     val kotlinVersion: String by project
     dependencies {
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
         classpath("org.jetbrains.kotlin:kotlin-serialization:$kotlinVersion")
+        classpath("org.jetbrains.dokka:dokka-gradle-plugin:$dokkaVersion")
     }
+}
+
+group = "kotlinw"
+
+tasks.wrapper {
+    gradleVersion = "6.0.1"
+    distributionType = Wrapper.DistributionType.ALL
 }
 
 allprojects {
@@ -27,9 +36,13 @@ allprojects {
     }
 }
 
-group = "kotlinw"
+subprojects {
+    apply(plugin = "org.jetbrains.dokka")
 
-tasks.wrapper {
-    gradleVersion = "6.0.1"
-    distributionType = Wrapper.DistributionType.ALL
+    tasks {
+        val dokka by getting(org.jetbrains.dokka.gradle.DokkaTask::class) {
+            outputFormat = "gfm"
+            outputDirectory = "$buildDir/dokka"
+        }
+    }
 }
