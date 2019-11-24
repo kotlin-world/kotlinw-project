@@ -26,3 +26,5 @@ actual fun LocalDateTimes.of(date: LocalDate, time: LocalTime): LocalDateTime = 
 
 actual fun LocalDateTimes.of(year: Int, monthValue: Int, dayOfMonth: Int, hour: Int, minute: Int, second: Int, nanoOfSecond: Int): LocalDateTime =
         LocalDateTime.of(year, monthValue, dayOfMonth, hour, minute, second, nanoOfSecond)
+
+actual fun LocalDateTime.atZone(zone: ZoneId): ZonedDateTime = atZone(zone)

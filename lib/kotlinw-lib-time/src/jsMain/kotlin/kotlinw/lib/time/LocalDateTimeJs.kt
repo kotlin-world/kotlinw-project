@@ -1,14 +1,18 @@
 package kotlinw.lib.time
 
+import kotlinw.js.luxon.DateTime
+
 actual interface ChronoLocalDateTime<D : ChronoLocalDate> : Comparable<ChronoLocalDateTime<*>>
 
 actual class LocalDateTime(
         internal val date: LocalDate,
         internal val time: LocalTime
 ) : ChronoLocalDateTime<LocalDate> {
+    internal val dateTime: DateTime by lazy { DateTime.local(date.year, date.monthValue, date.dayOfMonth, time.hour, time.minute, time.second, time.nanoOfSecond / 1_000_000) }
+
     override fun compareTo(other: ChronoLocalDateTime<*>): Int =
             if (other is LocalDateTime) {
-                compareBy(LocalDateTime::year).thenBy(LocalDateTime::monthValue).thenBy(LocalDateTime::dayOfMonth).thenBy(LocalDateTime::hour).thenBy(LocalDateTime::minute).thenBy(LocalDateTime::second).thenBy(LocalDateTime::nanoOfSecond).compare(this, other)
+                compareBy(LocalDateTime::date).thenBy(LocalDateTime::time).compare(this, other)
             } else {
                 throw IllegalArgumentException("Type is not supported: $other")
             }
@@ -36,3 +40,5 @@ actual fun LocalDateTimes.of(date: LocalDate, time: LocalTime): LocalDateTime = 
 
 actual fun LocalDateTimes.of(year: Int, monthValue: Int, dayOfMonth: Int, hour: Int, minute: Int, second: Int, nanoOfSecond: Int): LocalDateTime =
         LocalDateTime(LocalDate(year, monthValue, dayOfMonth), LocalTime(hour, minute, second, nanoOfSecond))
+
+actual fun LocalDateTime.atZone(zone: ZoneId): ZonedDateTime = ZonedDateTimes.of(zone, this)

@@ -561,14 +561,11 @@ external interface ZoneOffsetOptions {
 }
 
 open external class Zone {
-    open fun offsetName(ts: Number, options: ZoneOffsetOptions): String
-    open fun formatOffset(ts: Number, format: ZoneFormatOffset): String
     open var isValid: Boolean
     open var name: String
     open var type: String
     open var universal: Boolean
     open fun equals(other: Zone): Boolean
-    open fun offset(ts: Number): Number
 }
 
 open external class IANAZone(ianaString: String) : Zone {
@@ -578,6 +575,10 @@ open external class IANAZone(ianaString: String) : Zone {
         fun isValidZone(zone: String): Boolean
         fun resetCache()
     }
+
+    open fun offsetName(ts: Number, options: ZoneOffsetOptions): String
+    open fun formatOffset(ts: Number, format: ZoneFormatOffset): String
+    open fun offset(ts: Number): Number
 }
 
 open external class FixedOffsetZone : Zone {
@@ -586,6 +587,10 @@ open external class FixedOffsetZone : Zone {
         fun instance(offset: Number): FixedOffsetZone
         fun parseSpecifier(s: String): FixedOffsetZone
     }
+
+    open fun offsetName(options: ZoneOffsetOptions): String
+    open fun formatOffset(format: ZoneFormatOffset): String
+    open fun offset(): Number
 }
 
 open external class InvalidZone : Zone

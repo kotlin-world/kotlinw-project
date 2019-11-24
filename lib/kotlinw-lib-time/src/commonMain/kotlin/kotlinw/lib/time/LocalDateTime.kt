@@ -22,6 +22,10 @@ expect val LocalDateTime.second: Int
 
 expect val LocalDateTime.nanoOfSecond: Int
 
+expect fun LocalDateTime.atZone(zone: ZoneId): ZonedDateTime
+
+fun LocalDateTime.toInstant(zone: ZoneId) = atZone(zone).toInstant()
+
 object LocalDateTimes
 
 expect fun LocalDateTimes.of(date: LocalDate, time: LocalTime): LocalDateTime
