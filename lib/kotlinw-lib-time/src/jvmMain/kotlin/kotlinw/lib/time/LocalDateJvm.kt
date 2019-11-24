@@ -10,4 +10,4 @@ actual val LocalDate.month: Month get() = month
 actual val LocalDate.dayOfMonth: Int get() = dayOfMonth
 
 actual fun LocalDates.now(): LocalDate = LocalDate.now()
-actual fun LocalDates.of(year: Int, month: Int, dayOfMonth: Int): LocalDate = LocalDate.of(year, month, dayOfMonth)
+actual fun LocalDates.of(year: Int, monthValue: Int, dayOfMonth: Int): LocalDate = LocalDate.of(year, monthValue, dayOfMonth)

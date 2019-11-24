@@ -10,12 +10,12 @@ expect fun Instant.toEpochMilli(): Long
 
 expect fun Instant.toIso8601(): String
 
-expect object Instants {
-    fun now(): Instant
+object Instants
 
-    fun ofEpochMilli(epochMilli: Long): Instant
+expect fun Instants.now(): Instant
 
-    fun ofEpochSecond(epochSecond: Long, nanoOfSecond: Int = 0): Instant
+expect fun Instants.ofEpochMilli(epochMilli: Long): Instant
 
-    fun parseIso8601(text: CharSequence): Instant
-}
+expect fun Instants.ofEpochSecond(epochSecond: Long, nanoOfSecond: Int = 0): Instant
+
+expect fun Instants.parseIso8601(text: CharSequence): Instant

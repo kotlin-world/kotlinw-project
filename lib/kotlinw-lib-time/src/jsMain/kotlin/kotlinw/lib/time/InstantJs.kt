@@ -2,7 +2,13 @@ package kotlinw.lib.time
 
 import kotlinw.js.luxon.DateTime
 
-actual class Instant(val dateTime: DateTime) : Comparable<Instant> {
+actual class Instant(val epochSecond: Long, val nanoOfSecond: Int) : Comparable<Instant> {
+    internal val dateTime: DateTime by lazy { DateTime.fromMillis(epochSecond * 1000.0 + nanoOfSecond / 1_000_000.0) }
+
+    init {
+        require(nanoOfSecond in 0..999999999)
+    }
+
     override fun compareTo(other: Instant): Int = toEpochMilli().compareTo(other.toEpochMilli())
 
     override fun equals(other: Any?) = other is Instant && epochSecond == other.epochSecond && nanoOfSecond == other.nanoOfSecond
@@ -12,24 +18,25 @@ actual class Instant(val dateTime: DateTime) : Comparable<Instant> {
     override fun toString() = toIso8601()
 }
 
-actual val Instant.epochSecond: Long get() = toEpochMilli() / 1_000
+actual val Instant.epochSecond: Long get() = epochSecond
 
-actual val Instant.nanoOfSecond: Int get() = toEpochMilli().rem(1_000L).toInt() * 1_000_000
+actual val Instant.nanoOfSecond: Int get() = nanoOfSecond
 
 actual fun Instant.toEpochMilli(): Long = dateTime.toMillis().toLong()
 
 actual fun Instant.toIso8601(): String = dateTime.toISO()
 
-actual object Instants {
-    actual fun now(): Instant = Instant(DateTime.utc())
+@Suppress("unused")
+actual fun Instants.now(): Instant = Instants.of(DateTime.local())
 
-    actual fun ofEpochMilli(epochMilli: Long): Instant = Instant(DateTime.fromMillis(epochMilli.toDouble()).setZone("UTC"))
+actual fun Instants.ofEpochMilli(epochMilli: Long): Instant = Instants.of(DateTime.fromMillis(epochMilli.toDouble()))
 
-    actual fun ofEpochSecond(epochSecond: Long, nanoOfSecond: Int): Instant {
-        require(nanoOfSecond in 0..999999999)
-        return ofEpochMilli(epochSecond * 1000 + nanoOfSecond / 1_000_000)
-    }
+@Suppress("unused")
+actual fun Instants.ofEpochSecond(epochSecond: Long, nanoOfSecond: Int): Instant = Instant(epochSecond, nanoOfSecond)
 
-    // TODO accept only UTC
-    actual fun parseIso8601(text: CharSequence): Instant = Instant(DateTime.fromISO(text.toString()).setZone("UTC"))
-}
+// TODO accept only UTC
+@Suppress("unused")
+actual fun Instants.parseIso8601(text: CharSequence): Instant = Instants.of(DateTime.fromISO(text.toString()))
+
+@Suppress("unused")
+fun Instants.of(dateTime: DateTime) = dateTime.toMillis().toLong().let { Instant(it / 1_000, it.rem(1_000L).toInt() * 1_000_000) }

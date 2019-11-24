@@ -4,19 +4,26 @@ import kotlinw.js.luxon.DateTime
 
 actual interface ChronoLocalDate : Comparable<ChronoLocalDate>
 
-actual class LocalDate(val dateTime: DateTime) : ChronoLocalDate {
+actual class LocalDate(val year: Int, val monthValue: Int, val dayOfMonth: Int) : ChronoLocalDate {
+    internal val dateTime: DateTime by lazy { DateTime.local(year, monthValue, dayOfMonth) }
+
     override fun compareTo(other: ChronoLocalDate): Int =
             if (other is LocalDate) {
-                dateTime.toMillis().toLong().compareTo(other.dateTime.toMillis().toLong())
+                compareBy(LocalDate::year).thenBy(LocalDate::monthValue).thenBy(LocalDate::dayOfMonth).compare(this, other)
             } else {
-                throw IllegalArgumentException("Not supported: $other")
+                throw IllegalArgumentException("Type is not supported: $other")
             }
 }
 
-actual val LocalDate.year get() = dateTime.year.toInt()
-actual val LocalDate.monthValue get() = dateTime.month.toInt()
-actual val LocalDate.month get() = Months.of(monthValue)
-actual val LocalDate.dayOfMonth get() = dateTime.day.toInt()
+actual val LocalDate.year: Int get() = dateTime.year.toInt()
 
-actual fun LocalDates.now() = LocalDate(DateTime.local())
-actual fun LocalDates.of(year: Int, month: Int, dayOfMonth: Int) = LocalDate(DateTime.local(year, month, dayOfMonth))
+actual val LocalDate.monthValue: Int get() = dateTime.month.toInt()
+
+actual val LocalDate.month get() = Months.of(monthValue)
+
+actual val LocalDate.dayOfMonth: Int get() = dateTime.day.toInt()
+
+@Suppress("unused")
+actual fun LocalDates.now() = with(DateTime.local()) { LocalDate(year.toInt(), month.toInt(), day.toInt()) }
+
+actual fun LocalDates.of(year: Int, monthValue: Int, dayOfMonth: Int) = LocalDate(year, monthValue, dayOfMonth)
