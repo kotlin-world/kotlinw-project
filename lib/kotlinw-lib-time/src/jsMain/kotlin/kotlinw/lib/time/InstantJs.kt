@@ -2,7 +2,7 @@ package kotlinw.lib.time
 
 import kotlinw.js.luxon.DateTime
 
-actual class Instant(val epochSecond: Long, val nanoOfSecond: Int) : Comparable<Instant> {
+actual class Instant(internal val epochSecond: Long, internal val nanoOfSecond: Int) : Comparable<Instant> {
     internal val dateTime: DateTime by lazy { DateTime.fromMillis(epochSecond * 1000.0 + nanoOfSecond / 1_000_000.0) }
 
     init {
