@@ -23,6 +23,9 @@ Goals:
 - Month
 - Year
 - YearMonth
+- ZonedDateTime
+- ZoneId
+- ZoneOffset
 
 ### uuid
 
