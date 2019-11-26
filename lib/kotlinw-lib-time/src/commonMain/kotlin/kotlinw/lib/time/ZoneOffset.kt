@@ -1,10 +1,18 @@
 package kotlinw.lib.time
 
+//
+// ZoneOffset
+//
+
 expect class ZoneOffset : ZoneId, Comparable<ZoneOffset>
 
 expect val ZoneOffset.totalSeconds: Int
 
 expect val ZoneOffset.totalMinutes: Int
+
+//
+// ZoneOffsets
+//
 
 object ZoneOffsets {
     private const val MaxSeconds = 18 * TimeConstants.SecondsPerHour

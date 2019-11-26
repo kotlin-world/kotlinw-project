@@ -1,5 +1,6 @@
 package kotlinw.lib.time
 
+import kotlinx.serialization.json.Json
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -12,5 +13,11 @@ class LocalDateTest {
             assertEquals(Month.NOVEMBER, month)
             assertEquals(23, dayOfMonth)
         }
+    }
+
+    @Test
+    fun testSerialization() {
+        val localDate = LocalDates.now()
+        assertEquals(localDate, Json.parse(LocalDateSerializer, Json.stringify(LocalDateSerializer, localDate)))
     }
 }

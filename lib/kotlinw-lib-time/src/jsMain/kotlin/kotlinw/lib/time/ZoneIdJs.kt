@@ -1,8 +1,13 @@
 package kotlinw.lib.time
 
+import kotlinw.js.luxon.DateTime
 import kotlinw.js.luxon.FixedOffsetZone
 import kotlinw.js.luxon.IANAZone
 import kotlinw.js.luxon.Zone
+
+//
+// ZoneId
+//
 
 actual abstract class ZoneId {
     actual abstract fun getId(): String
@@ -22,6 +27,12 @@ actual fun ZoneId.getOffset(instant: Instant): ZoneOffset =
                 throw IllegalArgumentException("Unsupported ZoneId: $this")
             }
         }
+
+//
+// ZoneIds
+//
+
+actual val ZoneIds.local: ZoneId get() = DateTime.local().zone.toZoneId()
 
 actual fun ZoneIds.of(zoneId: String): ZoneId =
         when {

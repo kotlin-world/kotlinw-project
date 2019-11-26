@@ -1,5 +1,6 @@
 package kotlinw.lib.time
 
+import kotlinx.serialization.json.Json
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -17,5 +18,11 @@ class YearTest {
             assertEquals(2020, value)
             assertTrue(isLeap)
         }
+    }
+
+    @Test
+    fun testSerialization() {
+        val year = Years.of(2019)
+        assertEquals(year, Json.parse(YearSerializer, Json.stringify(YearSerializer, year)))
     }
 }

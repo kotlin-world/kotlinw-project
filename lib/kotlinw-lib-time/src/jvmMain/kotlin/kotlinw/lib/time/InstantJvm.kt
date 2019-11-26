@@ -1,5 +1,9 @@
 package kotlinw.lib.time
 
+//
+// Instant
+//
+
 actual typealias Instant = java.time.Instant
 
 actual val Instant.epochSecond: Long get() = epochSecond
@@ -8,7 +12,9 @@ actual val Instant.nanoOfSecond: Int get() = nano
 
 actual fun Instant.toEpochMilli(): Long = toEpochMilli()
 
-actual fun Instant.toIso8601(): String = toString()
+//
+// Instants
+//
 
 actual fun Instants.now(): Instant = Instant.now()
 
@@ -20,3 +26,11 @@ actual fun Instants.ofEpochSecond(epochSecond: Long, nanoOfSecond: Int): Instant
 }
 
 actual fun Instants.parseIso8601(text: CharSequence): Instant = Instant.parse(text)
+
+//
+// Conversions
+//
+
+actual fun Instant.toLocalDateTime(zoneId: ZoneId): LocalDateTime = LocalDateTime.ofInstant(this, zoneId)
+
+actual fun Instant.toZonedDateTime(zoneId: ZoneId): ZonedDateTime = ZonedDateTime.ofInstant(this, zoneId)

@@ -2,20 +2,24 @@ package kotlinw.lib.time
 
 import kotlinw.js.luxon.DateTime
 
+//
+// LocalDateTime
+//
+
 actual interface ChronoLocalDateTime<D : ChronoLocalDate> : Comparable<ChronoLocalDateTime<*>>
 
-actual class LocalDateTime(
+actual data class LocalDateTime(
         internal val date: LocalDate,
         internal val time: LocalTime
 ) : ChronoLocalDateTime<LocalDate> {
-    internal val dateTime: DateTime by lazy { DateTime.local(date.year, date.monthValue, date.dayOfMonth, time.hour, time.minute, time.second, time.nanoOfSecond / 1_000_000) }
-
     override fun compareTo(other: ChronoLocalDateTime<*>): Int =
             if (other is LocalDateTime) {
                 compareBy(LocalDateTime::date).thenBy(LocalDateTime::time).compare(this, other)
             } else {
                 throw IllegalArgumentException("Type is not supported: $other")
             }
+
+    // TODO tostring
 }
 
 actual val LocalDateTime.date: LocalDate get() = date
@@ -36,9 +40,19 @@ actual val LocalDateTime.second: Int get() = time.second
 
 actual val LocalDateTime.nanoOfSecond: Int get() = time.nanoOfSecond
 
+//
+// LocalDateTimes
+//
+
+actual fun LocalDateTimes.now(): LocalDateTime = DateTime.local().toLocalDateTime(0)
+
 actual fun LocalDateTimes.of(date: LocalDate, time: LocalTime): LocalDateTime = LocalDateTime(date, time)
 
 actual fun LocalDateTimes.of(year: Int, monthValue: Int, dayOfMonth: Int, hour: Int, minute: Int, second: Int, nanoOfSecond: Int): LocalDateTime =
         LocalDateTime(LocalDate(year, monthValue, dayOfMonth), LocalTime(hour, minute, second, nanoOfSecond))
 
-actual fun LocalDateTime.atZone(zone: ZoneId): ZonedDateTime = ZonedDateTimes.of(zone, this)
+//
+// Conversions
+//
+
+actual fun LocalDateTime.toZonedDateTime(zone: ZoneId): ZonedDateTime = ZonedDateTimes.of(zone, this)

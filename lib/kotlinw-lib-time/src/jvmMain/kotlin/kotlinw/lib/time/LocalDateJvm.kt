@@ -1,5 +1,9 @@
 package kotlinw.lib.time
 
+//
+// LocalDate
+//
+
 actual typealias ChronoLocalDate = java.time.chrono.ChronoLocalDate
 
 actual typealias LocalDate = java.time.LocalDate
@@ -11,6 +15,10 @@ actual val LocalDate.monthValue: Int get() = monthValue
 actual val LocalDate.month: Month get() = month
 
 actual val LocalDate.dayOfMonth: Int get() = dayOfMonth
+
+//
+// LocalDates
+//
 
 actual fun LocalDates.now(): LocalDate = LocalDate.now()
 

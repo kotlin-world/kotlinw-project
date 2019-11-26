@@ -1,5 +1,9 @@
 package kotlinw.lib.time
 
+//
+// LocalDateTime
+//
+
 actual typealias ChronoLocalDateTime<D> = java.time.chrono.ChronoLocalDateTime<D>
 
 actual typealias LocalDateTime = java.time.LocalDateTime
@@ -22,9 +26,19 @@ actual val LocalDateTime.second: Int get() = second
 
 actual val LocalDateTime.nanoOfSecond: Int get() = nano
 
+//
+// LocalDateTimes
+//
+
+actual fun LocalDateTimes.now(): LocalDateTime = LocalDateTime.now()
+
 actual fun LocalDateTimes.of(date: LocalDate, time: LocalTime): LocalDateTime = LocalDateTime.of(date, time)
 
 actual fun LocalDateTimes.of(year: Int, monthValue: Int, dayOfMonth: Int, hour: Int, minute: Int, second: Int, nanoOfSecond: Int): LocalDateTime =
         LocalDateTime.of(year, monthValue, dayOfMonth, hour, minute, second, nanoOfSecond)
 
-actual fun LocalDateTime.atZone(zone: ZoneId): ZonedDateTime = atZone(zone)
+//
+// Conversions
+//
+
+actual fun LocalDateTime.toZonedDateTime(zone: ZoneId): ZonedDateTime = atZone(zone)

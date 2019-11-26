@@ -1,5 +1,9 @@
 package kotlinw.lib.time
 
+//
+// Month
+//
+
 expect enum class Month {
     JANUARY,
     FEBRUARY,
@@ -16,6 +20,10 @@ expect enum class Month {
 }
 
 val Month.value: Int get() = ordinal + 1
+
+//
+// Months
+//
 
 object Months
 

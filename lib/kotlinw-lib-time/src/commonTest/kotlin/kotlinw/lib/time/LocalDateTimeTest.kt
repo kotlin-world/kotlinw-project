@@ -1,5 +1,6 @@
 package kotlinw.lib.time
 
+import kotlinx.serialization.json.Json
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -15,5 +16,11 @@ class LocalDateTimeTest {
             assertEquals(11, second)
             assertEquals(5434665, nanoOfSecond)
         }
+    }
+
+    @Test
+    fun testSerialization() {
+        val localDateTime = LocalDateTimes.now()
+        assertEquals(localDateTime, Json.parse(LocalDateTimeSerializer, Json.stringify(LocalDateTimeSerializer, localDateTime)))
     }
 }

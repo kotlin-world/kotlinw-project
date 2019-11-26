@@ -1,5 +1,12 @@
 package kotlinw.lib.time
 
+import kotlinx.serialization.*
+import kotlinx.serialization.internal.SerialClassDescImpl
+
+//
+// LocalDateTime
+//
+
 expect interface ChronoLocalDateTime<D : ChronoLocalDate> : Comparable<ChronoLocalDateTime<*>>
 
 expect class LocalDateTime : ChronoLocalDateTime<LocalDate>
@@ -22,12 +29,63 @@ expect val LocalDateTime.second: Int
 
 expect val LocalDateTime.nanoOfSecond: Int
 
-expect fun LocalDateTime.atZone(zone: ZoneId): ZonedDateTime
-
-fun LocalDateTime.toInstant(zone: ZoneId) = atZone(zone).toInstant()
+//
+// LocalDateTime
+//
 
 object LocalDateTimes
+
+expect fun LocalDateTimes.now(): LocalDateTime
 
 expect fun LocalDateTimes.of(date: LocalDate, time: LocalTime): LocalDateTime
 
 expect fun LocalDateTimes.of(year: Int, monthValue: Int, dayOfMonth: Int, hour: Int, minute: Int, second: Int = 0, nanoOfSecond: Int = 0): LocalDateTime
+
+//
+// Serializer
+//
+
+@Serializer(forClass = LocalDateTime::class)
+object LocalDateTimeSerializer : KSerializer<LocalDateTime> {
+    override val descriptor = object : SerialClassDescImpl("LocalDateTime") {
+        init {
+            addElement("date")
+            addElement("time")
+        }
+    }
+
+    override fun serialize(encoder: Encoder, obj: LocalDateTime) {
+        with(encoder.beginStructure(descriptor)) {
+            encodeSerializableElement(descriptor, 0, LocalDateSerializer, obj.date)
+            encodeSerializableElement(descriptor, 1, LocalTimeSerializer, obj.time)
+            endStructure(descriptor)
+        }
+    }
+
+    override fun deserialize(decoder: Decoder): LocalDateTime =
+            with(decoder.beginStructure(descriptor)) {
+                var date: LocalDate? = null
+                var time: LocalTime? = null
+                loop@ while (true) {
+                    when (val i = decodeElementIndex(descriptor)) {
+                        CompositeDecoder.READ_DONE -> break@loop
+                        0 -> date = decodeSerializableElement(descriptor, i, LocalDateSerializer)
+                        1 -> time = decodeSerializableElement(descriptor, i, LocalTimeSerializer)
+                        else -> throw SerializationException("Unknown index $i")
+                    }
+                }
+                endStructure(descriptor)
+                LocalDateTimes.of(
+                        date ?: throw MissingFieldException("year"),
+                        time ?: throw MissingFieldException("monthValue")
+                )
+            }
+}
+
+//
+// Conversions
+//
+
+fun LocalDateTime.toInstant(zone: ZoneId) = toZonedDateTime(zone).toInstant()
+
+expect fun LocalDateTime.toZonedDateTime(zone: ZoneId): ZonedDateTime

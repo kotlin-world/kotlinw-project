@@ -1,14 +1,16 @@
 package kotlinw.lib.time
 
+//
+// ZonedDateTime
+//
+
 actual typealias ChronoZonedDateTime<D> = java.time.chrono.ChronoZonedDateTime<D>
 
 actual typealias ZonedDateTime = java.time.ZonedDateTime
 
 actual val ZonedDateTime.zone: ZoneId get() = zone
 
-actual val ZonedDateTime.date: LocalDate get() = LocalDate.of(year, monthValue, dayOfMonth)
-
-actual val ZonedDateTime.time: LocalTime get() = LocalTime.of(hour, minute, second, nanoOfSecond)
+actual val ZonedDateTime.localDateTime: LocalDateTime get() = LocalDateTimes.of(LocalDates.of(year, monthValue, dayOfMonth), LocalTimes.of(hour, minute, second, nanoOfSecond))
 
 actual val ZonedDateTime.year: Int get() = year
 
@@ -26,4 +28,18 @@ actual val ZonedDateTime.nanoOfSecond: Int get() = nano
 
 actual fun ZonedDateTime.toInstant(): Instant = toInstant()
 
+//
+// ZonedDateTime
+//
+
+actual fun ZonedDateTimes.now(): ZonedDateTime = ZonedDateTime.now()
+
+actual fun ZonedDateTimes.now(zone: ZoneId): ZonedDateTime = ZonedDateTime.now(zone)
+
 actual fun ZonedDateTimes.of(zone: ZoneId, localDateTime: LocalDateTime): ZonedDateTime = ZonedDateTime.ofLocal(localDateTime, zone, null)
+
+//
+// Conversions
+//
+
+actual fun ZonedDateTime.withZoneSameLocal(zone: ZoneId): ZonedDateTime = withZoneSameLocal(zone)
