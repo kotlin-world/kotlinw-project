@@ -88,4 +88,8 @@ object LocalDateTimeSerializer : KSerializer<LocalDateTime> {
 
 fun LocalDateTime.toInstant(zone: ZoneId) = toZonedDateTime(zone).toInstant()
 
+fun LocalDateTime.toYear() = Years.of(year)
+
+fun LocalDateTime.toYearMonth() = YearMonths.of(year, monthValue)
+
 expect fun LocalDateTime.toZonedDateTime(zone: ZoneId): ZonedDateTime

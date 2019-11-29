@@ -26,8 +26,6 @@ actual val ZonedDateTime.second: Int get() = second
 
 actual val ZonedDateTime.nanoOfSecond: Int get() = nano
 
-actual fun ZonedDateTime.toInstant(): Instant = toInstant()
-
 //
 // ZonedDateTime
 //
@@ -43,3 +41,5 @@ actual fun ZonedDateTimes.of(zone: ZoneId, localDateTime: LocalDateTime): ZonedD
 //
 
 actual fun ZonedDateTime.withZoneSameLocal(zone: ZoneId): ZonedDateTime = withZoneSameLocal(zone)
+
+actual fun ZonedDateTime.toInstant(): Instant = toInstant()

@@ -1,5 +1,7 @@
 package kotlinw.lib.time
 
+import java.time.format.DateTimeFormatter
+
 //
 // Instant
 //
@@ -11,6 +13,8 @@ actual val Instant.epochSecond: Long get() = epochSecond
 actual val Instant.nanoOfSecond: Int get() = nano
 
 actual fun Instant.toEpochMilli(): Long = toEpochMilli()
+
+actual fun Instant.toIso8601(): String = DateTimeFormatter.ISO_INSTANT.format(this)
 
 //
 // Instants

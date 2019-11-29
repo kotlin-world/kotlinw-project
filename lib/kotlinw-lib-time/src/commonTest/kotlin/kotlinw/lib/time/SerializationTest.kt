@@ -15,7 +15,9 @@ class SerializationTest {
             @Serializable(with = YearSerializer::class) val year: Year,
             @Serializable(with = YearMonthSerializer::class) val yearMonth: YearMonth,
             @Serializable(with = ZonedDateTimeSerializer::class) val zonedDateTime: ZonedDateTime,
-            @Serializable(with = ZoneIdSerializer::class) val zoneId: ZoneId
+            @Serializable(with = ZoneIdSerializer::class) val zoneIdLocal: ZoneId,
+            @Serializable(with = ZoneIdSerializer::class) val zoneId1: ZoneId,
+            @Serializable(with = ZoneIdSerializer::class) val zoneId2: ZoneId
     )
 
     @Test
@@ -28,7 +30,9 @@ class SerializationTest {
                 Years.now(),
                 YearMonths.now(),
                 ZonedDateTimes.now(),
-                ZoneIds.local
+                ZoneIds.local,
+                ZoneIds.of("Europe/Budapest"),
+                ZoneIds.of("UTC+6")
         )
         assertEquals(o, Json.parse(Data.serializer(), Json.stringify(Data.serializer(), o)))
     }

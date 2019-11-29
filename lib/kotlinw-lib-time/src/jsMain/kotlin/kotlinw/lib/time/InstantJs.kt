@@ -25,6 +25,28 @@ actual val Instant.nanoOfSecond: Int get() = nanoOfSecond
 
 actual fun Instant.toEpochMilli(): Long = epochSecond * 1000 + nanoOfSecond / 1_000_000
 
+actual fun Instant.toIso8601(): String =
+        with(toLocalDateTime(ZoneOffsets.Utc)) {
+            buildString {
+                append(year)
+                append("-")
+                append(monthValue.toString().padStart(2, '0'))
+                append("-")
+                append(dayOfMonth.toString().padStart(2, '0'))
+                append("T")
+                append(hour.toString().padStart(2, '0'))
+                append(":")
+                append(minute.toString().padStart(2, '0'))
+                append(":")
+                append(second.toString().padStart(2, '0'))
+                if (nanoOfSecond != 0) {
+                    append(".")
+                    append(if (nanoOfSecond.rem(1_000_000) == 0) (nanoOfSecond / 1_000_000).toString().padStart(3, '0') else nanoOfSecond.toString().padStart(9, '0'))
+                }
+                append("Z")
+            }
+        }
+
 //
 // Instants
 //

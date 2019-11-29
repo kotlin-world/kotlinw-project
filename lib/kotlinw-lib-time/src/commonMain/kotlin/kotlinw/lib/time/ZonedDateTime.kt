@@ -92,3 +92,5 @@ object ZonedDateTimeSerializer : KSerializer<ZonedDateTime> {
 //
 
 expect fun ZonedDateTime.toInstant(): Instant
+
+fun ZonedDateTime.toLocalDateTime() = localDateTime

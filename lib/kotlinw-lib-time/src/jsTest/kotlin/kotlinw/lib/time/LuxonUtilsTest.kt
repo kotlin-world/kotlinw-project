@@ -30,6 +30,14 @@ class LuxonUtilsTest {
             assertEquals(1574718118L, instant.epochSecond)
             assertEquals(999_999_999, instant.nanoOfSecond)
         }
+
+        with(Instants.ofEpochSecond(1574532489, 999_999_999)) {
+            assertEquals(this, dateTime.toInstant(nanoOfSecond.rem(1_000_000)))
+        }
+
+        with(Instants.ofEpochMilli(1574532489123)) {
+            assertEquals(this, dateTime.toInstant())
+        }
     }
 
     @Test

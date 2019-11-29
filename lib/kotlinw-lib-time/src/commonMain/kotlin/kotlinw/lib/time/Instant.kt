@@ -15,27 +15,7 @@ expect val Instant.nanoOfSecond: Int
 
 expect fun Instant.toEpochMilli(): Long
 
-fun Instant.toIso8601(): String =
-        with(toLocalDateTime(ZoneOffsets.Utc)) {
-            buildString {
-                append(year)
-                append("-")
-                append(monthValue.toString().padStart(2, '0'))
-                append("-")
-                append(dayOfMonth.toString().padStart(2, '0'))
-                append("T")
-                append(hour.toString().padStart(2, '0'))
-                append(":")
-                append(minute.toString().padStart(2, '0'))
-                append(":")
-                append(second.toString().padStart(2, '0'))
-                if (nanoOfSecond != 0) {
-                    append(".")
-                    append(if (nanoOfSecond.rem(1_000_000) == 0) (nanoOfSecond / 1_000_000).toString().padStart(3, '0') else nanoOfSecond.toString().padStart(9, '0'))
-                }
-                append("Z")
-            }
-        }
+expect fun Instant.toIso8601(): String
 
 //
 // Instants
@@ -95,6 +75,10 @@ object InstantSerializer : KSerializer<Instant> {
 //
 // Conversions
 //
+
+fun Instant.toYear(zoneId: ZoneId) = toLocalDateTime(zoneId).toYear()
+
+fun Instant.toYearMonth(zoneId: ZoneId) = toLocalDateTime(zoneId).toYearMonth()
 
 expect fun Instant.toLocalDateTime(zoneId: ZoneId): LocalDateTime
 
