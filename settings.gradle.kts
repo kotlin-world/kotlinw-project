@@ -1,5 +1,8 @@
 rootProject.name = "kotlinw"
 
+include("example:kotlinw-server")
+include("example:kotlinw-webapp")
+
 include("js-wrapper:kotlinw-js-decimaljs")
 include("js-wrapper:kotlinw-js-luxon")
 include("js-wrapper:kotlinw-js-uuidrandom")

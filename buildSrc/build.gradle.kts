@@ -5,7 +5,7 @@ buildscript {
         maven { url = uri("https://plugins.gradle.org/m2/") }
     }
 
-    val kotlinVersion = "1.3.60" // TODO gradle.properties?
+    val kotlinVersion = "1.3.61" // TODO gradle.properties?
     dependencies {
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
     }
@@ -15,7 +15,7 @@ plugins {
     `kotlin-dsl`
 }
 
-val kotlinVersion = "1.3.60" // TODO gradle.properties?
+val kotlinVersion = "1.3.61" // TODO gradle.properties?
 
 apply(plugin = "kotlin")
 
