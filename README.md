@@ -11,7 +11,7 @@ Javascript wrappers for:
 Multiplatform Kotlin library (for JVM and JS).
 
 Goals:
-- use Java types on JVM (if possible)
+- reuse Java types on JVM (if possible)
 - do not reinvent the wheel, use existing platform implementations (if possible)
 
 ### math
