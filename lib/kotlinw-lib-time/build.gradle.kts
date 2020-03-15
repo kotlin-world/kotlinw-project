@@ -1,4 +1,5 @@
 import kotlinw.build.Lib
+import kotlinw.build.LibPlugin
 import kotlinw.build.NpmVersion
 import kotlinw.build.jsMain
 
@@ -7,7 +8,7 @@ plugins {
     id("kotlinx-serialization")
 }
 
-apply<kotlinw.build.LibPlugin>()
+apply<LibPlugin>()
 
 kotlin {
     sourceSets.jsMain {

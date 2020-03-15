@@ -14,7 +14,7 @@ external interface HomePageState : RState {
 class HomePage(props: HomePageProps) : RComponent<HomePageProps, HomePageState>(props) {
     override fun HomePageState.init(props: HomePageProps) {
         clickCount = 0
-        message = "Home!!!"
+        message = "Click the button!"
     }
 
     override fun RBuilder.render() {

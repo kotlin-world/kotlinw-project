@@ -49,7 +49,7 @@ actual fun LocalDateTimes.now(): LocalDateTime = DateTime.local().toLocalDateTim
 actual fun LocalDateTimes.of(date: LocalDate, time: LocalTime): LocalDateTime = LocalDateTime(date, time)
 
 actual fun LocalDateTimes.of(year: Int, monthValue: Int, dayOfMonth: Int, hour: Int, minute: Int, second: Int, nanoOfSecond: Int): LocalDateTime =
-        LocalDateTime(LocalDate(year, monthValue, dayOfMonth), LocalTime(hour, minute, second, nanoOfSecond))
+        LocalDateTime(LocalDates.of(year, monthValue, dayOfMonth), LocalTime(hour, minute, second, nanoOfSecond))
 
 //
 // Conversions

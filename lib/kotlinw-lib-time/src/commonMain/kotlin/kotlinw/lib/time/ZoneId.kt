@@ -1,7 +1,6 @@
 package kotlinw.lib.time
 
 import kotlinx.serialization.*
-import kotlinx.serialization.internal.StringDescriptor
 
 //
 // ZoneId
@@ -31,10 +30,10 @@ expect fun ZoneIds.of(zoneId: String): ZoneId
 
 @Serializer(forClass = ZoneId::class)
 object ZoneIdSerializer : KSerializer<ZoneId> {
-    override val descriptor = StringDescriptor.withName("id")
+    override val descriptor = PrimitiveDescriptor("id", PrimitiveKind.STRING)
 
-    override fun serialize(encoder: Encoder, obj: ZoneId) {
-        encoder.encodeString(obj.id)
+    override fun serialize(encoder: Encoder, value: ZoneId) {
+        encoder.encodeString(value.id)
     }
 
     override fun deserialize(decoder: Decoder): ZoneId {

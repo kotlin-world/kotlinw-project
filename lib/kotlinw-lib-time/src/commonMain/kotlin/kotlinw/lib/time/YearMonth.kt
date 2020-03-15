@@ -1,7 +1,6 @@
 package kotlinw.lib.time
 
 import kotlinx.serialization.*
-import kotlinx.serialization.internal.SerialClassDescImpl
 
 //
 // YearMonth
@@ -33,21 +32,22 @@ fun YearMonths.of(year: Int, month: Month): YearMonth = YearMonths.of(year, mont
 
 @Serializer(forClass = YearMonth::class)
 object YearMonthSerializer : KSerializer<YearMonth> {
-    override val descriptor = object : SerialClassDescImpl("YearMonth") {
-        init {
-            addElement("year")
-            addElement("monthValue")
-        }
+    @ImplicitReflectionSerializer
+    override val descriptor = SerialDescriptor("YearMonth") {
+        element<Int>("year")
+        element<Int>("monthValue")
     }
 
-    override fun serialize(encoder: Encoder, obj: YearMonth) {
+    @ImplicitReflectionSerializer
+    override fun serialize(encoder: Encoder, value: YearMonth) {
         with(encoder.beginStructure(descriptor)) {
-            encodeIntElement(descriptor, 0, obj.year)
-            encodeIntElement(descriptor, 1, obj.monthValue)
+            encodeIntElement(descriptor, 0, value.year)
+            encodeIntElement(descriptor, 1, value.monthValue)
             endStructure(descriptor)
         }
     }
 
+    @ImplicitReflectionSerializer
     override fun deserialize(decoder: Decoder): YearMonth =
             with(decoder.beginStructure(descriptor)) {
                 var year: Int? = null

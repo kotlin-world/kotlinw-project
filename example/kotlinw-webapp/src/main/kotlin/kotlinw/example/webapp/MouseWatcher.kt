@@ -9,6 +9,12 @@ import react.useEffectWithCleanup
 import react.useState
 import kotlin.browser.window
 
+val MouseWatcher = functionalComponent<RProps> {
+    val p = useMousePosition()
+    span {
+        +"${p.x}, ${p.y}"
+    }
+}
 
 data class MousePosition(val x: Int, val y: Int)
 
@@ -29,11 +35,4 @@ fun useMousePosition(): MousePosition {
     }
 
     return position
-}
-
-val MouseWatcher = functionalComponent<RProps> {
-    val p = useMousePosition()
-    span {
-        +"${p.x}, ${p.y}"
-    }
 }

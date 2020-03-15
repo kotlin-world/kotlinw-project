@@ -1,7 +1,6 @@
 package kotlinw.lib.time
 
 import kotlinx.serialization.*
-import kotlinx.serialization.internal.SerialClassDescImpl
 
 //
 // LocalTime
@@ -31,25 +30,26 @@ expect fun LocalTimes.of(hour: Int, minute: Int, second: Int = 0, nanoOfSecond: 
 
 @Serializer(forClass = LocalTime::class)
 object LocalTimeSerializer : KSerializer<LocalTime> {
-    override val descriptor = object : SerialClassDescImpl("LocalTime") {
-        init {
-            addElement("hour")
-            addElement("minute")
-            addElement("second")
-            addElement("nanoOfSecond")
-        }
+    @ImplicitReflectionSerializer
+    override val descriptor = SerialDescriptor("LocalTime") {
+        element<Int>("hour")
+        element<Int>("minute")
+        element<Int>("second")
+        element<Int>("nanoOfSecond")
     }
 
-    override fun serialize(encoder: Encoder, obj: LocalTime) {
+    @ImplicitReflectionSerializer
+    override fun serialize(encoder: Encoder, value: LocalTime) {
         with(encoder.beginStructure(descriptor)) {
-            encodeIntElement(descriptor, 0, obj.hour)
-            encodeIntElement(descriptor, 1, obj.minute)
-            encodeIntElement(descriptor, 2, obj.second)
-            encodeIntElement(descriptor, 3, obj.nanoOfSecond)
+            encodeIntElement(descriptor, 0, value.hour)
+            encodeIntElement(descriptor, 1, value.minute)
+            encodeIntElement(descriptor, 2, value.second)
+            encodeIntElement(descriptor, 3, value.nanoOfSecond)
             endStructure(descriptor)
         }
     }
 
+    @ImplicitReflectionSerializer
     override fun deserialize(decoder: Decoder): LocalTime =
             with(decoder.beginStructure(descriptor)) {
                 var hour: Int? = null

@@ -1,7 +1,6 @@
 package kotlinw.lib.time
 
 import kotlinx.serialization.*
-import kotlinx.serialization.internal.SerialClassDescImpl
 
 //
 // Instant
@@ -37,21 +36,22 @@ expect fun Instants.parseIso8601(text: CharSequence): Instant
 
 @Serializer(forClass = Instant::class)
 object InstantSerializer : KSerializer<Instant> {
-    override val descriptor = object : SerialClassDescImpl("Instant") {
-        init {
-            addElement("epochSecond")
-            addElement("nanoOfSecond")
-        }
+    @ImplicitReflectionSerializer
+    override val descriptor = SerialDescriptor("Instant") {
+        element<Long>("epochSecond")
+        element<Int>("nanoOfSecond")
     }
 
-    override fun serialize(encoder: Encoder, obj: Instant) {
+    @ImplicitReflectionSerializer
+    override fun serialize(encoder: Encoder, value: Instant) {
         with(encoder.beginStructure(descriptor)) {
-            encodeLongElement(descriptor, 0, obj.epochSecond)
-            encodeIntElement(descriptor, 1, obj.nanoOfSecond)
+            encodeLongElement(descriptor, 0, value.epochSecond)
+            encodeIntElement(descriptor, 1, value.nanoOfSecond)
             endStructure(descriptor)
         }
     }
 
+    @ImplicitReflectionSerializer
     override fun deserialize(decoder: Decoder): Instant =
             with(decoder.beginStructure(descriptor)) {
                 var epochSecond: Long? = null

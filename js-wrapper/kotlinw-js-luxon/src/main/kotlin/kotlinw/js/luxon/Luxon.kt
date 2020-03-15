@@ -417,7 +417,7 @@ open external class Duration {
     open fun negate(): Duration
     open fun normalize(): Duration
     open fun plus(duration: Duration): Duration
-    open fun plus(duration: Number): Duration
+    open fun plus(milliseconds: Number): Duration
     open fun plus(duration: DurationObject): Duration
     open fun reconfigure(objectPattern: DurationOptions): Duration
     open fun set(values: DurationObjectUnits): Duration

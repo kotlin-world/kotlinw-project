@@ -1,7 +1,6 @@
 package kotlinw.lib.time
 
 import kotlinx.serialization.*
-import kotlinx.serialization.internal.SerialClassDescImpl
 
 //
 // LocalDate
@@ -35,23 +34,24 @@ expect fun LocalDates.of(year: Int, monthValue: Int, dayOfMonth: Int): LocalDate
 
 @Serializer(forClass = LocalDate::class)
 object LocalDateSerializer : KSerializer<LocalDate> {
-    override val descriptor = object : SerialClassDescImpl("LocalDate") {
-        init {
-            addElement("year")
-            addElement("monthValue")
-            addElement("dayOfMonth")
-        }
+    @ImplicitReflectionSerializer
+    override val descriptor = SerialDescriptor("LocalDate") {
+        element<Int>("year")
+        element<Int>("monthValue")
+        element<Int>("dayOfMonth")
     }
 
-    override fun serialize(encoder: Encoder, obj: LocalDate) {
+    @ImplicitReflectionSerializer
+    override fun serialize(encoder: Encoder, value: LocalDate) {
         with(encoder.beginStructure(descriptor)) {
-            encodeIntElement(descriptor, 0, obj.year)
-            encodeIntElement(descriptor, 1, obj.monthValue)
-            encodeIntElement(descriptor, 2, obj.dayOfMonth)
+            encodeIntElement(descriptor, 0, value.year)
+            encodeIntElement(descriptor, 1, value.monthValue)
+            encodeIntElement(descriptor, 2, value.dayOfMonth)
             endStructure(descriptor)
         }
     }
 
+    @ImplicitReflectionSerializer
     override fun deserialize(decoder: Decoder): LocalDate =
             with(decoder.beginStructure(descriptor)) {
                 var year: Int? = null
@@ -80,3 +80,22 @@ object LocalDateSerializer : KSerializer<LocalDate> {
 //
 
 fun LocalDate.toYearMonth() = YearMonths.of(year, monthValue)
+
+//
+// Operations
+//
+
+expect fun LocalDate.plusYears(years: Int): LocalDate
+
+expect fun LocalDate.plusMonths(months: Int): LocalDate
+
+expect fun LocalDate.plusDays(days: Int): LocalDate
+
+fun LocalDate.minusYears(years: Int): LocalDate = plusYears(-years)
+
+fun LocalDate.minusMonths(months: Int): LocalDate = plusMonths(-months)
+
+fun LocalDate.minusDays(days: Int): LocalDate = plusDays(-days)
+
+//@ExperimentalTime
+//expect operator fun LocalDate.plus(duration: Duration): LocalDateTime

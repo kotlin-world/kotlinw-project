@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 buildscript {
     repositories {
         mavenCentral()
@@ -5,12 +7,10 @@ buildscript {
         maven { url = uri("https://plugins.gradle.org/m2/") }
     }
 
-    val dokkaVersion: String by project
     val kotlinVersion: String by project
     dependencies {
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
         classpath("org.jetbrains.kotlin:kotlin-serialization:$kotlinVersion")
-        classpath("org.jetbrains.dokka:dokka-gradle-plugin:$dokkaVersion")
     }
 }
 
@@ -37,12 +37,14 @@ allprojects {
 }
 
 subprojects {
-    apply(plugin = "org.jetbrains.dokka")
+    tasks.withType<Test> {
+        useJUnitPlatform()
+    }
 
-    tasks {
-        val dokka by getting(org.jetbrains.dokka.gradle.DokkaTask::class) {
-            outputFormat = "gfm"
-            outputDirectory = "$buildDir/dokka"
+    tasks.withType<KotlinCompile> {
+        kotlinOptions {
+            freeCompilerArgs = listOf("-Xjsr305=strict")
+            jvmTarget = "1.8"
         }
     }
 }

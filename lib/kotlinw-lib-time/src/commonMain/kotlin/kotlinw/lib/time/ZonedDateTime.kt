@@ -1,7 +1,6 @@
 package kotlinw.lib.time
 
 import kotlinx.serialization.*
-import kotlinx.serialization.internal.SerialClassDescImpl
 
 //
 // ZonedDateTime
@@ -52,21 +51,22 @@ fun ZonedDateTimes.of(zone: ZoneId, year: Int, monthValue: Int, dayOfMonth: Int,
 
 @Serializer(forClass = ZonedDateTime::class)
 object ZonedDateTimeSerializer : KSerializer<ZonedDateTime> {
-    override val descriptor = object : SerialClassDescImpl("ZonedDateTime") {
-        init {
-            addElement("zone")
-            addElement("localDateTime")
-        }
+    @ImplicitReflectionSerializer
+    override val descriptor = SerialDescriptor("ZonedDateTime") {
+        element<ZoneId>("zone")
+        element<LocalDateTime>("localDateTime")
     }
 
-    override fun serialize(encoder: Encoder, obj: ZonedDateTime) {
+    @ImplicitReflectionSerializer
+    override fun serialize(encoder: Encoder, value: ZonedDateTime) {
         with(encoder.beginStructure(descriptor)) {
-            encodeSerializableElement(descriptor, 0, ZoneIdSerializer, obj.zone)
-            encodeSerializableElement(descriptor, 1, LocalDateTimeSerializer, obj.localDateTime)
+            encodeSerializableElement(descriptor, 0, ZoneIdSerializer, value.zone)
+            encodeSerializableElement(descriptor, 1, LocalDateTimeSerializer, value.localDateTime)
             endStructure(descriptor)
         }
     }
 
+    @ImplicitReflectionSerializer
     override fun deserialize(decoder: Decoder): ZonedDateTime =
             with(decoder.beginStructure(descriptor)) {
                 var zone: ZoneId? = null

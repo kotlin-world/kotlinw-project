@@ -1,11 +1,12 @@
 buildscript {
     repositories {
         mavenCentral()
+        jcenter()
         maven { url = uri("https://dl.bintray.com/kotlin/kotlin-eap") }
         maven { url = uri("https://plugins.gradle.org/m2/") }
     }
 
-    val kotlinVersion = "1.3.61" // TODO gradle.properties?
+    val kotlinVersion = "1.3.70" // TODO gradle.properties?
     dependencies {
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
     }
@@ -15,13 +16,15 @@ plugins {
     `kotlin-dsl`
 }
 
-val kotlinVersion = "1.3.61" // TODO gradle.properties?
+val kotlinVersion = "1.3.70" // TODO gradle.properties?
 
 apply(plugin = "kotlin")
 
 repositories {
     mavenCentral()
     maven { url = uri("https://dl.bintray.com/kotlin/kotlin-eap") }
+    jcenter()
+    maven { url = uri("https://plugins.gradle.org/m2/") }
 }
 
 kotlin {

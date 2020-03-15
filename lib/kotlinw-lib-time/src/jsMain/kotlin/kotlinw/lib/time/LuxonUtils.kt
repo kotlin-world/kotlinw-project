@@ -13,7 +13,7 @@ internal fun DateTime.toInstant(nanoOfSecondCorrection: Int = 0) = toMillis().to
 
 // LocalDate
 
-internal fun DateTime.toLocalDate() = LocalDate(year.toInt(), month.toInt(), day.toInt())
+internal fun DateTime.toLocalDate(): LocalDate = LocalDates.of(year.toInt(), month.toInt(), day.toInt())
 
 // LocalTime
 

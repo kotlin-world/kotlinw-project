@@ -1,7 +1,6 @@
 package kotlinw.lib.uuid
 
 import kotlinx.serialization.*
-import kotlinx.serialization.internal.StringDescriptor
 
 expect class Uuid {
     override fun toString(): String
@@ -13,7 +12,7 @@ expect fun randomUuid(): Uuid
 
 @Serializer(forClass = Uuid::class)
 class UuidSerializer : KSerializer<Uuid> {
-    override val descriptor = StringDescriptor.withName("Uuid")
+    override val descriptor = PrimitiveDescriptor("Uuid", PrimitiveKind.STRING)
 
     override fun deserialize(decoder: Decoder): Uuid {
         return decoder.decodeString().toUuid()

@@ -1,7 +1,6 @@
 package kotlinw.lib.time
 
 import kotlinx.serialization.*
-import kotlinx.serialization.internal.SerialClassDescImpl
 
 //
 // LocalDateTime
@@ -47,21 +46,22 @@ expect fun LocalDateTimes.of(year: Int, monthValue: Int, dayOfMonth: Int, hour: 
 
 @Serializer(forClass = LocalDateTime::class)
 object LocalDateTimeSerializer : KSerializer<LocalDateTime> {
-    override val descriptor = object : SerialClassDescImpl("LocalDateTime") {
-        init {
-            addElement("date")
-            addElement("time")
-        }
+    @ImplicitReflectionSerializer
+    override val descriptor = SerialDescriptor("LocalDateTime") {
+        element<LocalDate>("date")
+        element<LocalTime>("time")
     }
 
-    override fun serialize(encoder: Encoder, obj: LocalDateTime) {
+    @ImplicitReflectionSerializer
+    override fun serialize(encoder: Encoder, value: LocalDateTime) {
         with(encoder.beginStructure(descriptor)) {
-            encodeSerializableElement(descriptor, 0, LocalDateSerializer, obj.date)
-            encodeSerializableElement(descriptor, 1, LocalTimeSerializer, obj.time)
+            encodeSerializableElement(descriptor, 0, LocalDateSerializer, value.date)
+            encodeSerializableElement(descriptor, 1, LocalTimeSerializer, value.time)
             endStructure(descriptor)
         }
     }
 
+    @ImplicitReflectionSerializer
     override fun deserialize(decoder: Decoder): LocalDateTime =
             with(decoder.beginStructure(descriptor)) {
                 var date: LocalDate? = null

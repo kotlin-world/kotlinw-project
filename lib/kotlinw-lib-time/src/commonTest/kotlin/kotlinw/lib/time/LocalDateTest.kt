@@ -20,4 +20,12 @@ class LocalDateTest {
         val localDate = LocalDates.now()
         assertEquals(localDate, Json.parse(LocalDateSerializer, Json.stringify(LocalDateSerializer, localDate)))
     }
+
+    @Test
+    fun testOperations() {
+        with(LocalDates.of(2019, 12, 29)) {
+            assertEquals(LocalDates.of(2020, 1, 2), plusDays(4))
+            assertEquals(LocalDates.of(2019, 11, 29), minusDays(30))
+        }
+    }
 }

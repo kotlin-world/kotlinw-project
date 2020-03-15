@@ -1,7 +1,6 @@
 package kotlinw.lib.time
 
 import kotlinx.serialization.*
-import kotlinx.serialization.internal.IntDescriptor
 
 //
 // Year
@@ -31,10 +30,10 @@ fun Years.isLeap(isoYear: Int) = Years.of(isoYear).isLeap
 
 @Serializer(forClass = Year::class)
 object YearSerializer : KSerializer<Year> {
-    override val descriptor = IntDescriptor.withName("value")
+    override val descriptor = PrimitiveDescriptor("value", PrimitiveKind.INT)
 
-    override fun serialize(encoder: Encoder, obj: Year) {
-        encoder.encodeInt(obj.value)
+    override fun serialize(encoder: Encoder, value: Year) {
+        encoder.encodeInt(value.value)
     }
 
     override fun deserialize(decoder: Decoder): Year {
